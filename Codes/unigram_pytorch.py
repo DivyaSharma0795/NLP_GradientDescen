@@ -5,7 +5,7 @@ from numpy.typing import NDArray
 import torch
 from typing import List, Optional
 from torch import nn
-
+import matplotlib.pyplot as plt
 
 FloatArray = NDArray[np.float64]
 
@@ -76,6 +76,10 @@ def gradient_descent_example():
     num_iterations = 1000  # SET THIS
     learning_rate = 0.01  # SET THIS
 
+    # initialize lists to store loss and iteration values
+    losses = []
+    iterations = []
+
     # train model
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     for _ in range(num_iterations):
@@ -84,9 +88,17 @@ def gradient_descent_example():
         loss.backward(retain_graph=True)
         optimizer.step()
         optimizer.zero_grad()
+        # append loss and iteration values to lists
+        losses.append(loss.item())
+        iterations.append(_)
 
     # display results
-    raise RuntimeError("Remove this error and create visualizations.")  # DO THIS
+    # raise RuntimeError("Remove this error and create visualizations.")  # DO THIS
+    # plot loss as a function of iterations
+    plt.plot(iterations, losses)
+    plt.xlabel("Iteration")
+    plt.ylabel("Loss")
+    plt.show()
 
 
 if __name__ == "__main__":
