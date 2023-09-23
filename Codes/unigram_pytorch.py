@@ -10,9 +10,7 @@ from torch import nn
 FloatArray = NDArray[np.float64]
 
 
-def onehot(
-    vocabulary: List[Optional[str]], token: Optional[str]
-) -> FloatArray:
+def onehot(vocabulary: List[Optional[str]], token: Optional[str]) -> FloatArray:
     """Generate the one-hot encoding for the provided token in the provided vocabulary."""
     embedding = np.zeros((len(vocabulary), 1))
     try:
@@ -75,8 +73,8 @@ def gradient_descent_example():
     model = Unigram(len(vocabulary))
 
     # set number of iterations and learning rate
-    num_iterations =  # SET THIS
-    learning_rate =  # SET THIS
+    num_iterations = 1000  # SET THIS
+    learning_rate = 0.01  # SET THIS
 
     # train model
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
