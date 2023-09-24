@@ -73,18 +73,24 @@ def gradient_descent_example():
     model = Unigram(len(vocabulary))
 
     # set number of iterations and learning rate
-    num_iterations = 1000  # SET THIS
+    num_iterations = 10000  # SET THIS
     learning_rate = 0.01  # SET THIS
 
     # initialize lists to store loss and iteration values
     losses = []
     iterations = []
-
+    min_loss = None
+    # print(tokens)
+    # print(encodings)
     # train model
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     for _ in range(num_iterations):
         p_pred = model(x)
         loss = -p_pred
+        # print(loss, np.log(loss.item()))
+        if min_loss is None or np.log(loss.item()) < min_loss:
+            min_loss = np.log(loss.item())
+            min_loss_item = loss.item()
         loss.backward(retain_graph=True)
         optimizer.step()
         optimizer.zero_grad()
@@ -92,9 +98,12 @@ def gradient_descent_example():
         losses.append(loss.item())
         iterations.append(_)
 
+    print(min_loss)
+    print(min_loss_item)
     # display results
     # raise RuntimeError("Remove this error and create visualizations.")  # DO THIS
     # plot loss as a function of iterations
+    # print(iterations, losses)
     plt.plot(iterations, losses)
     plt.xlabel("Iteration")
     plt.ylabel("Loss")
