@@ -71,43 +71,45 @@ def gradient_descent_example():
 
     # define model
     model = Unigram(len(vocabulary))
-
+    print(type(encodings))
+    print(encodings)
+    print(encodings.shape)
+    temp_array = np.sum(encodings, 1, keepdims=True)
+    temp = 0
+    for i in range(temp_array.size):
+        temp += temp_array[i] / encodings.shape[1]
+        print(i, temp_array[i], temp_array[i] / encodings.shape[1])
+    print(encodings.shape[0])
+    print(encodings.shape[1])
+    print(temp)
     # set number of iterations and learning rate
-    num_iterations = 10000  # SET THIS
+    num_iterations = 1000  # SET THIS
     learning_rate = 0.01  # SET THIS
 
     # initialize lists to store loss and iteration values
     losses = []
     iterations = []
-    min_loss = None
-    # print(tokens)
-    # print(encodings)
     # train model
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-    for _ in range(num_iterations):
-        p_pred = model(x)
-        loss = -p_pred
-        # print(loss, np.log(loss.item()))
-        if min_loss is None or np.log(loss.item()) < min_loss:
-            min_loss = np.log(loss.item())
-            min_loss_item = loss.item()
-        loss.backward(retain_graph=True)
-        optimizer.step()
-        optimizer.zero_grad()
-        # append loss and iteration values to lists
-        losses.append(loss.item())
-        iterations.append(_)
+    # for _ in range(num_iterations):
+    #     p_pred = model(x)
+    #     loss = -p_pred
+    #     loss.backward(retain_graph=True)
+    #     optimizer.step()
+    #     optimizer.zero_grad()
+    #     # append loss and iteration values to lists
+    #     losses.append(loss.item())
+    #     iterations.append(_)
 
-    print(min_loss)
-    print(min_loss_item)
+    # print(min_loss)
+    # print(min_loss_item)
     # display results
-    # raise RuntimeError("Remove this error and create visualizations.")  # DO THIS
     # plot loss as a function of iterations
-    # print(iterations, losses)
-    plt.plot(iterations, losses)
-    plt.xlabel("Iteration")
-    plt.ylabel("Loss")
-    plt.show()
+
+    # plt.plot(iterations, losses)
+    # plt.xlabel("Iteration")
+    # plt.ylabel("Loss")
+    # plt.show()
 
 
 if __name__ == "__main__":
