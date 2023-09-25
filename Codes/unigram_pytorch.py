@@ -76,12 +76,22 @@ def gradient_descent_example():
     print(encodings.shape)
     temp_array = np.sum(encodings, 1, keepdims=True)
     temp = 0
+    probabilities = np.array([])
     for i in range(temp_array.size):
         temp += temp_array[i] / encodings.shape[1]
         print(i, temp_array[i], temp_array[i] / encodings.shape[1])
+        probabilities = np.append(probabilities, temp_array[i] / encodings.shape[1])
     print(encodings.shape[0])
     print(encodings.shape[1])
     print(temp)
+    print(probabilities)
+    log_probabilities = np.log(probabilities)
+    print(log_probabilities)
+    known_min_probability = probabilities.T @ log_probabilities
+    print(known_min_probability)
+    print(np.log(known_min_probability))
+    print(np.log(known_min_probability) - np.log(1 - known_min_probability))
+    print((logit(loss_fn(known_min_probability))))
     # set number of iterations and learning rate
     num_iterations = 1000  # SET THIS
     learning_rate = 0.01  # SET THIS
@@ -91,25 +101,27 @@ def gradient_descent_example():
     iterations = []
     # train model
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-    # for _ in range(num_iterations):
-    #     p_pred = model(x)
-    #     loss = -p_pred
-    #     loss.backward(retain_graph=True)
-    #     optimizer.step()
-    #     optimizer.zero_grad()
-    #     # append loss and iteration values to lists
-    #     losses.append(loss.item())
-    #     iterations.append(_)
+    for _ in range(num_iterations):
+        p_pred = model(x)
+        loss = -p_pred
+        loss.backward(retain_graph=True)
+        optimizer.step()
+        optimizer.zero_grad()
+        # append loss and iteration values to lists
+        losses.append(loss.item())
+        # print(loss.item())
+        iterations.append(_)
 
     # print(min_loss)
     # print(min_loss_item)
     # display results
     # plot loss as a function of iterations
 
-    # plt.plot(iterations, losses)
-    # plt.xlabel("Iteration")
-    # plt.ylabel("Loss")
-    # plt.show()
+    plt.plot(iterations, losses)
+    plt.axhline(y=known_min_probability, color="r", linestyle="--")
+    plt.xlabel("Iteration")
+    plt.ylabel("Loss")
+    plt.show()
 
 
 if __name__ == "__main__":
