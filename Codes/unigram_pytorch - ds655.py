@@ -73,10 +73,11 @@ def gradient_descent_example():
     model = Unigram(len(vocabulary))
     # print(type(encodings))
     # print(encodings)
-    print(encodings.shape)
+    # print(encodings.shape)
     temp_array = np.sum(encodings, 1, keepdims=True)
     temp = 0
     probabilities = np.array([])
+    counts = np.array([])
     for i in range(temp_array.size):
         temp += temp_array[i] / encodings.shape[1]
         print(
@@ -86,16 +87,14 @@ def gradient_descent_example():
             np.log(temp_array[i] / encodings.shape[1]),
         )
         probabilities = np.append(probabilities, temp_array[i] / encodings.shape[1])
-    print(encodings.shape[0])
-    print(encodings.shape[1])
-    print(temp)
-    print(probabilities)
+        counts = np.append(counts, temp_array[i])
     log_probabilities = np.log(probabilities)
+    known_min_probability = -counts.T @ log_probabilities
+    # print(encodings.shape[0])
+    # print(encodings.shape[1])
+    # print(temp)
     print(log_probabilities)
-    known_min_probability = probabilities.T @ log_probabilities
     print(known_min_probability)
-    # print(np.log(known_min_probability))
-    # print(np.log(known_min_probability) - np.log(1 - known_min_probability))
     print((logit(loss_fn(-known_min_probability))))
     # set number of iterations and learning rate
     num_iterations = 1000  # SET THIS
@@ -117,15 +116,17 @@ def gradient_descent_example():
         # print(loss.item())
         iterations.append(_)
 
-    # print(min_loss)
-    # print(min_loss_item)
-    # display results
-    # plot loss as a function of iterations
-    print(losses)
-    plt.plot(iterations, losses)
-    plt.axhline(y=known_min_probability, color="r", linestyle="--")
+    # plot loss as a function of iterations, with known mimimum loss value
+    plt.plot(iterations, losses, label="Loss")
+    plt.axhline(
+        y=known_min_probability,
+        color="r",
+        linestyle="--",
+        label="Known Minimum Loss Value",
+    )
     plt.xlabel("Iteration")
     plt.ylabel("Loss")
+    plt.legend()
     plt.show()
 
 

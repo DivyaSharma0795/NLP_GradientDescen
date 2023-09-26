@@ -127,6 +127,28 @@ def gradient_descent_example():
     plt.xlabel("Iteration")
     plt.ylabel("Loss")
     plt.show()
+    # print(model.s)
+    # print(len(model.s))
+    # print(model.s[0])
+    # print(model.s[0].item())
+    model_parameters = np.array([])
+    for i in range(len(model.s)):
+        # print(model.s[i].item())
+        model_parameters = np.append(model_parameters, model.s[i].item())
+    model_parameters
+    model_parameters_sigmoid_normalized = normalize(model.s)
+    # print(model_parameters_sigmoid_normalized)
+    for i in range(len(model_parameters_sigmoid_normalized)):
+        print(
+            np.log(model_parameters_sigmoid_normalized[i].item()),
+            # np.log(-model_parameters_sigmoid_normalized[i].item()),
+            np.log(model_parameters_sigmoid[i].item()),
+            # np.log(-model_parameters_sigmoid[i].item()),
+            logit(model_parameters_sigmoid_normalized[i].item()),
+            # logit(-model_parameters_sigmoid_normalized[i].item()),
+            logit(model_parameters_sigmoid[i].item()),
+            logit(-model_parameters_sigmoid[i].item()),
+        )
 
 
 if __name__ == "__main__":
