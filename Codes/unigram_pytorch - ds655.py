@@ -71,13 +71,12 @@ def gradient_descent_example():
 
     # define model
     model = Unigram(len(vocabulary))
-    # print(type(encodings))
-    # print(encodings)
-    # print(encodings.shape)
+
     temp_array = np.sum(encodings, 1, keepdims=True)
     temp = 0
     probabilities = np.array([])
     counts = np.array([])
+
     for i in range(temp_array.size):
         temp += temp_array[i] / encodings.shape[1]
         print(
@@ -90,12 +89,9 @@ def gradient_descent_example():
         counts = np.append(counts, temp_array[i])
     log_probabilities = np.log(probabilities)
     known_min_probability = -counts.T @ log_probabilities
-    # print(encodings.shape[0])
-    # print(encodings.shape[1])
-    # print(temp)
-    print(log_probabilities)
-    print(known_min_probability)
-    print((logit(loss_fn(-known_min_probability))))
+
+    print("Log Probabilities: ", log_probabilities)
+    print("Known Minimum Probability: ", known_min_probability)
     # set number of iterations and learning rate
     num_iterations = 1000  # SET THIS
     learning_rate = 0.01  # SET THIS
@@ -113,7 +109,6 @@ def gradient_descent_example():
         optimizer.zero_grad()
         # append loss and iteration values to lists
         losses.append(loss.item())
-        # print(loss.item())
         iterations.append(_)
 
     # plot loss as a function of iterations, with known mimimum loss value
@@ -128,6 +123,7 @@ def gradient_descent_example():
     plt.ylabel("Loss")
     plt.legend()
     plt.show()
+    plt.savefig("..\Resources/Iterative_Losses.png")
 
 
 if __name__ == "__main__":
