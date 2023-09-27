@@ -111,7 +111,7 @@ def gradient_descent_example():
         losses.append(loss.item())
         iterations.append(_)
 
-    # plot loss as a function of iterations, with known mimimum loss value
+    # plotting loss as a function of iterations, with known mimimum loss value
     plt.plot(iterations, losses, label="Loss")
     plt.axhline(
         y=known_min_probability,
@@ -123,7 +123,52 @@ def gradient_descent_example():
     plt.ylabel("Loss")
     plt.legend()
     plt.show()
-    plt.savefig("..\Resources/Iterative_Losses.png")
+    # plt.savefig("./Resources/Iterative_Losses.png")
+
+    gd_assigned_probabilities = normalize(torch.sigmoid(model.s))
+    assigned_probabilities = np.array([])
+    actual_probabilities = np.array([])
+    difference = np.array([])
+    characters = vocabulary.copy()
+    characters[-1] = "None"
+    for i in range(len(gd_assigned_probabilities)):
+        print(
+            i,  # Index
+            characters[i],  # Character
+            gd_assigned_probabilities[
+                i
+            ].item(),  # Predicted Probability based on Gradient Descent
+            probabilities[i],  # True Probability based on the training data
+            probabilities[i]
+            - gd_assigned_probabilities[
+                i
+            ].item(),  # Difference between Actual and Predicted
+        )
+        assigned_probabilities = np.append(
+            assigned_probabilities, gd_assigned_probabilities[i].item()
+        )  # Predicted Probabilities based on Gradient Descent
+        actual_probabilities = np.append(
+            actual_probabilities, probabilities[i]
+        )  # True Probabilities based on the training data
+        difference = np.append(
+            difference, probabilities[i] - gd_assigned_probabilities[i].item()
+        )  # Difference between Actual and Predicted
+
+    plt.title("Known Minimum Probabilities vs Model Optimal Probabilities")
+
+    X = characters
+    Y = actual_probabilities
+    Z = assigned_probabilities
+
+    X_axis = np.arange(len(X))
+    plt.bar(X_axis - 0.2, Y, 0.4, label="True Probabilities")
+    plt.bar(X_axis + 0.2, Z, 0.4, label="Assigned Probabilities")
+    plt.xlabel("Vocabulary Element")
+    plt.ylabel("Probabilities")
+    plt.xticks(np.arange(len(characters)), characters)
+    plt.legend()
+    plt.show()
+    # plt.savefig("..\Resources/Probability_Comparisons.png")
 
 
 if __name__ == "__main__":
