@@ -72,30 +72,30 @@ def gradient_descent_example():
     # define model
     model = Unigram(len(vocabulary))
 
+    # Getting the known minimum probabilities
     temp_array = np.sum(encodings, 1, keepdims=True)
     temp = 0
     probabilities = np.array([])
     counts = np.array([])
 
     for i in range(temp_array.size):
-        temp += temp_array[i] / encodings.shape[1]
-        print(
-            i,
-            temp_array[i],
-            temp_array[i] / encodings.shape[1],
-            np.log(temp_array[i] / encodings.shape[1]),
-        )
+        temp += (
+            temp_array[i] / encodings.shape[1]
+        )  # Test that temp = 1 at the end of this loop
+        # Creating an array of probabilities
         probabilities = np.append(probabilities, temp_array[i] / encodings.shape[1])
+        # Creating an array of counts
         counts = np.append(counts, temp_array[i])
+    # Creating an array of log probabilities (loss)
     log_probabilities = np.log(probabilities)
+    # Calculating the known minimum loss
     known_min_probability = -counts.T @ log_probabilities
 
-    print("Log Probabilities: ", log_probabilities)
-    print("Known Minimum Probability: ", known_min_probability)
+    print("Known Minimum Loss Value: ", known_min_probability)
+    # print("Log Probabilities: ", log_probabilities)
     # set number of iterations and learning rate
-    num_iterations = 1000  # SET THIS
-    learning_rate = 0.01  # SET THIS
-
+    num_iterations = 1000
+    learning_rate = 0.01
     # initialize lists to store loss and iteration values
     losses = []
     iterations = []
@@ -122,6 +122,7 @@ def gradient_descent_example():
     plt.xlabel("Iteration")
     plt.ylabel("Loss")
     plt.legend()
+    plt.title("Loss as a function of Iteration")
     plt.show()
     # plt.savefig("./Resources/Iterative_Losses.png")
 
@@ -154,6 +155,13 @@ def gradient_descent_example():
             difference, probabilities[i] - gd_assigned_probabilities[i].item()
         )  # Difference between Actual and Predicted
 
+    print("Known Probabilities: \n", actual_probabilities)
+    print("Gradient Descent Output Probabilities: \n", assigned_probabilities)
+
+    # Plotting the difference between the actual and predicted probabilities for each character as a bar chart
+    print(
+        "Plotting the difference between known and assigned probabilities as a bar chart"
+    )
     plt.title("Known Minimum Probabilities vs Model Optimal Probabilities")
 
     X = characters
@@ -169,6 +177,15 @@ def gradient_descent_example():
     plt.legend()
     plt.show()
     # plt.savefig("..\Resources/Probability_Comparisons.png")
+
+    # Plotting the difference between the actual and predicted probabilities as a scatter plot
+    plt.title("Assigned Probabilities vs Known Minimum Probabilities")
+    plt.scatter(actual_probabilities, assigned_probabilities, label="Probability")
+    plt.xlabel("Known Minimum Probabilities")
+    plt.ylabel("Assigned Probabilities")
+    plt.legend()
+    plt.show()
+    # plt.savefig("..\Resources/Probability_Scatter.png")
 
 
 if __name__ == "__main__":
