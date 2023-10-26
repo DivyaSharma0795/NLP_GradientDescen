@@ -1,4 +1,4 @@
-# This is a default Python repository [![Python CI](https://github.com/DivyaSharma0795/Basic_Python_Repository/actions/workflows/main.yml/badge.svg)](https://github.com/DivyaSharma0795/Basic_Python_Repository/actions/workflows/main.yml)
+# This is a WIP Repository for NLP Gradient Descent Algorithm Performance Evaluations
 
 Files in this repository include:
 
